@@ -30,7 +30,7 @@ public class PostController {
     @GetMapping("/posts")
     public ResponseEntity<?> getAllPosts(HttpServletRequest request, HttpServletResponse response) {
         List<Post> posts = postRepository.findAll();
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-Requested-With, remember-me");
         return ResponseEntity.ok(posts);
