@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,12 @@ public class PostController {
     UserRepository userRepository;
 
     @GetMapping("/posts")
-    public ResponseEntity<?> getAllPosts() {
+    public ResponseEntity<?> getAllPosts(HttpServletResponse response) {
         List<Post> posts = postRepository.findAll();
-
+        response.setHeader("Access-Control-Allow-Origin", "https://secure-coast-68465.herokuapp.com");
         return ResponseEntity.ok(posts);
+
+        //return ResponseEntity.ok(posts);
     }
 
     @PostMapping("/posts")
