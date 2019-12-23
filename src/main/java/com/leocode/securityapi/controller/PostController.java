@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +28,9 @@ public class PostController {
     UserRepository userRepository;
 
     @GetMapping("/posts")
-    public ResponseEntity<?> getAllPosts(HttpServletResponse response) {
+    public ResponseEntity<?> getAllPosts(HttpServletRequest request, HttpServletResponse response) {
         List<Post> posts = postRepository.findAll();
-        response.setHeader("Access-Control-Allow-Origin", "https://secure-coast-68465.herokuapp.com");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         return ResponseEntity.ok(posts);
 
         //return ResponseEntity.ok(posts);
