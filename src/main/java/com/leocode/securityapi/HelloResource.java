@@ -8,6 +8,7 @@ import com.leocode.securityapi.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -54,7 +55,8 @@ public class HelloResource {
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
         }catch(BadCredentialsException e){
-            throw new Exception("Incorrect username or password", e);
+            //throw new Exception("Incorrect username or password", e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username or Password wrong");
         }
 
         final UserDetails userDetails = userDetailsService
