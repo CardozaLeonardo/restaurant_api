@@ -45,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             System.out.println("Content of username: " + username);
         }else {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.getWriter().write("{\"message\" : \"There is not token...\"}");
+            //response.getWriter().write("{\"message\" : \"There is not token...\"}");
 
         }
 
@@ -65,7 +65,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }else{
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                response.getWriter().write("{\"message\" : \"Invalid Token...\"}");
+                //response.getWriter().write("{\"message\" : \"Invalid Token...\"}");
             }
         }
 
