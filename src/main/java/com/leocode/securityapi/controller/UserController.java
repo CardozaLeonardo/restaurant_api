@@ -7,9 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +20,9 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -47,5 +49,13 @@ public class UserController {
         return ResponseEntity.ok(users);
 
 
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+
+        String plainPass = user.getPassword();
+        user.setPassword(passwordEncoder.encode(plainPass));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(user));
     }
 }
