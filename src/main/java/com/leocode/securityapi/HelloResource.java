@@ -3,6 +3,7 @@ package com.leocode.securityapi;
 import com.leocode.securityapi.models.AuthenticationRequest;
 import com.leocode.securityapi.models.AuthenticationResponse;
 import com.leocode.securityapi.models.Greeting;
+import com.leocode.securityapi.models.response.ResponseInfo;
 import com.leocode.securityapi.services.MyUserDetailsService;
 import com.leocode.securityapi.util.JwtUtil;
 import org.slf4j.Logger;
@@ -56,7 +57,8 @@ public class HelloResource {
             );
         }catch(BadCredentialsException e){
             //throw new Exception("Incorrect username or password", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username or Password wrong");
+            ResponseInfo responseInfo = new ResponseInfo("Username or Password wrong");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseInfo);
         }
 
         final UserDetails userDetails = userDetailsService
