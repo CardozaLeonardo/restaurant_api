@@ -14,7 +14,7 @@ public class Role {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "user")
+    @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
     public int getId() {
