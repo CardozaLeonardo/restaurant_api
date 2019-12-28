@@ -1,6 +1,7 @@
 package com.leocode.securityapi.controller;
 
 import com.leocode.securityapi.models.User;
+import com.leocode.securityapi.repository.RoleRepository;
 import com.leocode.securityapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,14 @@ public class RoleController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    @GetMapping("/roles")
+    public ResponseEntity<?> getAllRoles() {
+        return ResponseEntity.ok(roleRepository.findAll());
+    }
 
     @GetMapping("/get_user_roles/{user}")
     public ResponseEntity<?> getUserRole(@PathVariable("user") int idUser) {
