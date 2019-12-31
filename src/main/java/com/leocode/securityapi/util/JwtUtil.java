@@ -53,7 +53,18 @@ public class JwtUtil {
         return createToken(claims, userDetails.getUsername());
     }
 
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return createRefreshToken(claims, userDetails.getUsername());
+    }
+
     private String createToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 300))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
+    }
+
+    private String createRefreshToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 900))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();

@@ -18,6 +18,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class HelloResource {
     @Autowired
@@ -47,7 +50,7 @@ public class HelloResource {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse res) throws Exception {
 
         logger.info("Authenticate: everything fine here");
         logger.info("Username: " + authenticationRequest.getUsername());
@@ -64,10 +67,18 @@ public class HelloResource {
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
-        //System.out.println("AUthenticate: " + userDetails.getUsername());
-        logger.info("Authenticate: ----");
+
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
+        final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+
+        Cookie tokenAccessCookie = new Cookie("access-token", jwt);
+        Cookie refreshTokenCookie = new Cookie("refresh-token", refreshToken);
+
+
+
+        res.addCookie(tokenAccessCookie);
+        res.addCookie(refreshTokenCookie);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
 
